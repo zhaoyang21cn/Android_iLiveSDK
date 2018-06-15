@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/colorComBg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.tencent.ilivesdk.view.AVRootView
+            android:id="@+id/av_root_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:fitsSystemWindows="true"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_room_name"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textSize="23dp"
+                android:textColor="@color/colorWhite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_room_id"
+                android:textSize="15dp"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:visibility="gone"
+            android:paddingTop="100dp"
+            android:paddingLeft="20dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/ll_control"
+            android:gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/ll_chat"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/icon_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_chat"
+                    android:src="@mipmap/chat"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height" />
+                <TextView
+                    android:text="@string/str_chat"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_switch"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/icon_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_switch"
+                    android:src="@mipmap/camera"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height" />
+                <TextView
+                    android:text="@string/str_switch_camera"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_beauty"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/icon_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_beauty"
+                    android:src="@mipmap/beauty2"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height" />
+                <TextView
+                    android:text="@string/str_beauty"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_voice"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/icon_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_mic"
+                    android:src="@mipmap/mic"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height" />
+                <TextView
+                    android:text="@string/str_voice"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_role"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/icon_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_role"
+                    android:src="@mipmap/role"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height" />
+                <TextView
+                    android:text="@string/str_role"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_log"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/icon_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_log"
+                    android:src="@mipmap/log"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height" />
+                <TextView
+                    android:text="@string/str_log"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_feedback"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/icon_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_feedback"
+                    android:src="@mipmap/feedback"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height" />
+                <TextView
+                    android:text="@string/str_feedback"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+        <com.tencent.qcloud.videocall.ui.utils.MsgListView
+            android:id="@+id/lv_chat_msg"
+            android:layout_width="240dp"
+            android:layout_height="158dp"
+            android:layout_above="@id/ll_control"
+            android:cacheColorHint="#00000000"
+            android:background="#00000000"
+            android:divider="#3c421b1b"
+            android:scrollbars="none"
+            android:stackFromBottom="true"
+            android:transcriptMode="normal" />
+
+        <EditText
+            android:id="@+id/et_msg"
+            android:visibility="gone"
+            android:singleLine="true"
+            android:padding="10dp"
+            android:background="@color/colorWhite"
+            android:textColor="@color/colorBlack"
+            android:textCursorDrawable="@color/colorBlack"
+            android:layout_below="@+id/lv_chat_msg"
+            android:imeOptions="actionSend"
+            android:hint="@string/str_input_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+</LinearLayout>

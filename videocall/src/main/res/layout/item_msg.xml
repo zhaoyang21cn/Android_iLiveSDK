@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <ImageView
+            android:src="@drawable/img_chat_black"
+            android:scaleType="fitXY"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="2dp"
+            android:layout_alignTop="@+id/activation_layout"
+            android:layout_alignBottom="@id/activation_layout"
+            android:layout_alignLeft="@id/activation_layout"
+            android:layout_alignRight="@id/activation_layout" />
+        <LinearLayout
+            android:id="@id/activation_layout"
+            android:clipToPadding="true"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <!-- LinearLayout wraps a bunch of smallish views here -->
+            <TextView
+                android:id="@+id/tv_chat_msg"
+                android:textSize="12sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

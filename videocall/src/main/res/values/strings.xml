@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">腾讯视频通话</string>
+    <string name="str_enter_tips">腾讯视频通话</string>
+    <string name="str_room_title">房间名</string>
+    <string name="str_room_id">房间ID</string>
+    <string name="str_create_btn">创建房间</string>
+    <string name="str_switch_camera">翻转</string>
+    <string name="str_chat_tab">聊天</string>
+    <string name="str_wb_tab">白板</string>
+    <string name="msg_title">消息</string>
+    <string name="str_input_tips">输入文字内容</string>
+    <string name="str_beauty">美颜</string>
+    <string name="str_log">日志</string>
+    <string name="str_voice">声音</string>
+    <string name="str_room_id_tips">输入房间号</string>
+    <string name="str_enter_room_btn">进入房间</string>
+    <string name="str_role">配置</string>
+    <string name="str_feedback">反馈</string>
+    <string name="str_set_role">请选择要配置的分辨率</string>
+    <string name="str_chat">聊天</string>
+    <string name="str_set_problem">请选择反馈类型</string>
+    <string name="str_problem_other">请输入具体问题描述</string>
+    <string name="str_feedback_ret">非常感谢您的反馈</string>
+    <string name="str_login_success">登录成功</string>
+</resources>

@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="common_dlg" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+    <style name="full_dlg" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    　　<item name="android:windowContentOverlay">@null</item>
+    　　<item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+    　　<item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+    </style>
+
+</resources>

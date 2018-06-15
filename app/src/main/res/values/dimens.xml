@@ -1,0 +1,8 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="icon_width">30dp</dimen>
+    <dimen name="icon_height">30dp</dimen>
+
+    <dimen name="icon_text_size">12dp</dimen>
+    <dimen name="icon_margin">18dp</dimen>
+</resources>

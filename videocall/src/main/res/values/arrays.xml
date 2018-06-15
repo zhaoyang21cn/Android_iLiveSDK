@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="roleinfos">
+        <item>1280x720 1000&#8210;1800Kbps 20fps</item>
+        <item>960x540 500&#8210;800Kbps 15fps</item>
+        <item>640x368 400&#8210;800Kbps 15fps</item>
+        <item>480x360 300&#8210;600Kbps 15fps</item>
+        <item>320x240 200&#8210;400Kbps 15fps</item>
+    </string-array>
+
+    <string-array name="roles">
+        <item>ed1280</item>
+        <item>ed960</item>
+        <item>ed640</item>
+        <item>ed480</item>
+        <item>ed320</item>
+    </string-array>
+
+    <string-array name="feedback">
+        <item>视频卡顿</item>
+        <item>画面不清晰</item>
+        <item>音质较差</item>
+        <item>其他</item>
+    </string-array>
+</resources>
