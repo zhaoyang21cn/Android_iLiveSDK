@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.tencent.ilivesdk.ILiveConstants;
 import com.tencent.ilivesdk.core.ILiveLog;
+import com.tencent.ilivesdk.core.ILiveLoginManager;
 import com.tencent.ilivesdk.data.ILiveMessage;
 import com.tencent.ilivesdk.data.msg.ILiveCustomMessage;
 import com.tencent.ilivesdk.data.msg.ILiveTextMessage;
@@ -27,6 +28,8 @@ import com.tencent.ilivesdk.listener.ILiveMessageListener;
 import com.tencent.ilivesdk.view.AVRootView;
 import com.tencent.qcloud.videocall.R;
 import com.tencent.qcloud.videocall.bussiness.model.BussinessConstants;
+import com.tencent.qcloud.videocall.bussiness.model.PrivateMapKeyInfo;
+import com.tencent.qcloud.videocall.bussiness.view.SyncPrivateMapkeyView;
 import com.tencent.qcloud.videocall.trtcsdk.MessageObservable;
 import com.tencent.qcloud.videocall.trtcsdk.SDKHelper;
 import com.tencent.qcloud.videocall.bussiness.model.UserInfo;
@@ -47,7 +50,7 @@ import java.util.ArrayList;
  * Created by tencent on 2018/5/21.
  */
 public class RoomActivity extends Activity implements ILiveMessageListener, View.OnClickListener,
-        RoomView, TipsView {
+        RoomView, TipsView, SyncPrivateMapkeyView {
     private final static String TAG = "RoomActivity";
     private AVRootView avRootView;
     private TextView tvRoomName, tvRoomId;
@@ -66,11 +69,13 @@ public class RoomActivity extends Activity implements ILiveMessageListener, View
 
         initView();
 
+        OKHelper.getInstance().addPrivateMapKeyView(this);
         SDKHelper.getInstance().addRoomView(this);
         SDKHelper.getInstance().addTipsView(this);
 
         SDKHelper.getInstance().setTrtcRenderView(avRootView);
-        SDKHelper.getInstance().enterTrtcRoom(UserInfo.getInstance().getCurRoomId());
+        OKHelper.getInstance().getPrivateMapKey(ILiveLoginManager.getInstance().getMyUserId(),
+                UserInfo.getInstance().getCurRoomId());
         MessageObservable.getInstance().addObserver(this);
 
         msgAdapter = new ChatMsgAdapter(this, chatMsg);
@@ -91,6 +96,7 @@ public class RoomActivity extends Activity implements ILiveMessageListener, View
         super.onDestroy();
         MessageObservable.getInstance().deleteObserver(this);
 
+        OKHelper.getInstance().removePrivateMapKeyView(this);
         SDKHelper.getInstance().onDestoryRoom();
         SDKHelper.getInstance().removeRoomView(this);
         SDKHelper.getInstance().removeTipsView(this);
@@ -141,6 +147,17 @@ public class RoomActivity extends Activity implements ILiveMessageListener, View
                 feedDialog.show();
             }
         }
+    }
+
+    @Override
+    public void onSyncKeySuccess(PrivateMapKeyInfo privateMapKey) {
+        SDKHelper.getInstance().enterTrtcRoom(privateMapKey.getRoomId(), privateMapKey.getPrivateMapKey());
+    }
+
+    @Override
+    public void onSyncKeyFailed(int code, String errInfo) {
+        DlgMgr.showMsg(getContext(), "onSyncKeyFailed->: " + code + "|" + errInfo);
+        finish();
     }
 
     @Override

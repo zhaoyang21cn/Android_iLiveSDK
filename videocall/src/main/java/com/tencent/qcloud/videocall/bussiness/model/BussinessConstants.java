@@ -19,6 +19,8 @@ public class BussinessConstants {
     public final static String JSON_ACCOUNTTYPE = "accountType";
     public final static String JSON_USERID = "userID";
     public final static String JSON_USERSIG = "userSig";
+    public final static String JSON_ROOMID = "roomID";
+    public final static String JSON_PRIVATEMAPKEY = "privateMapKey";
 
     public final static String JSON_NICKNAME = "nickName";
 }

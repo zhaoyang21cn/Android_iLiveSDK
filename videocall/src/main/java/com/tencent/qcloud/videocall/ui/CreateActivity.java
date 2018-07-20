@@ -89,7 +89,7 @@ public class CreateActivity extends Activity implements SyncUserInfoView, LoginV
     }
 
     @Override
-    public void onSyncSuccess(LoginInfo info) {
+    public void onSyncLoginSuccess(LoginInfo info) {
         UserInfo.getInstance().setUserId(info.getUserId());
         UserInfo.getInstance().setNickName(info.getUserId());
         UserInfo.getInstance().writeToCache(this);
@@ -99,7 +99,7 @@ public class CreateActivity extends Activity implements SyncUserInfoView, LoginV
     }
 
     @Override
-    public void onSyncFailed(int errCode, String errInfo) {
+    public void onSyncLoginFailed(int errCode, String errInfo) {
         DlgMgr.showMsg(getContext(), "SyncFailed: " + errCode + "|" + errInfo);
     }
 

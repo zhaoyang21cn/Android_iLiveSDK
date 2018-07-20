@@ -202,9 +202,10 @@ public class SDKHelper implements ILiveLoginManager.TILVBStatusListener,
     }
 
     /** 进入房间 */
-    public void enterTrtcRoom(final int roomid){
+    public void enterTrtcRoom(final int roomid, final String privateMapKey){
         ILiveRoomOption option = new ILiveRoomOption()
                 .exceptionListener(this)
+                .privateMapKey(privateMapKey)
                 .roomDisconnectListener(this)
                 .controlRole(Constants.DEF_ROLE);
         ILiveCallBack callBack = new ILiveCallBack() {
@@ -215,13 +216,13 @@ public class SDKHelper implements ILiveLoginManager.TILVBStatusListener,
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                if (module.equals(ILiveConstants.Module_IMSDK) && 10015 == errCode){
+                if (module.equals(ILiveConstants.Module_IMSDK) && (10010 == errCode || 10015 == errCode)){
                     mMainHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            createRoom(roomid);
+                            createRoom(roomid, privateMapKey);
                         }
-                    }, 200);
+                    }, 1000);
                 }else {
                     notifyEnterRoomFailed(module, errCode, errMsg);
                 }
@@ -524,8 +525,9 @@ public class SDKHelper implements ILiveLoginManager.TILVBStatusListener,
         return String.format(Locale.CHINA, "{\"%s\":\"%s\"}", BussinessConstants.JSON_NICKNAME, UserInfo.getInstance().getNickName());
     }
 
-    private void createRoom(int roomid){
+    private void createRoom(int roomid, String privateMapKey){
         ILiveRoomOption option = new ILiveRoomOption()
+                .privateMapKey(privateMapKey)
                 .exceptionListener(this)
                 .roomDisconnectListener(this)
                 .controlRole(Constants.DEF_ROLE);

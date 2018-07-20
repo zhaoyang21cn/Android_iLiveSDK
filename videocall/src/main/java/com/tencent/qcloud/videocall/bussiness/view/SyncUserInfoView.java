@@ -7,7 +7,7 @@ import com.tencent.qcloud.videocall.bussiness.model.LoginInfo;
  */
 public interface SyncUserInfoView {
     /** 获取登录信息成功 */
-    void onSyncSuccess(LoginInfo info);
+    void onSyncLoginSuccess(LoginInfo info);
     /** 获取登录信息失败 */
-    void onSyncFailed(int code, String errInfo);
+    void onSyncLoginFailed(int code, String errInfo);
 }

@@ -5,7 +5,9 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.tencent.qcloud.videocall.bussiness.model.BussinessConstants;
+import com.tencent.qcloud.videocall.bussiness.model.PrivateMapKeyInfo;
 import com.tencent.qcloud.videocall.bussiness.model.LoginInfo;
+import com.tencent.qcloud.videocall.bussiness.view.SyncPrivateMapkeyView;
 import com.tencent.qcloud.videocall.bussiness.view.SyncUserInfoView;
 
 import org.json.JSONObject;
@@ -36,6 +38,7 @@ public class OKHelper {
     private Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     private List<SyncUserInfoView> syncUserInfoViews = new LinkedList<>();
+    private List<SyncPrivateMapkeyView> syncPrivateMapKeyViews = new LinkedList<>();
 
     private static OKHelper instance;
 
@@ -65,6 +68,16 @@ public class OKHelper {
         syncUserInfoViews.remove(view);
     }
 
+    public void addPrivateMapKeyView(SyncPrivateMapkeyView view){
+        if (!syncPrivateMapKeyViews.contains(view)){
+            syncPrivateMapKeyViews.add(view);
+        }
+    }
+
+    public void removePrivateMapKeyView(SyncPrivateMapkeyView view){
+        syncPrivateMapKeyViews.remove(view);
+    }
+
     /** 从业务服务器获取登录信息 */
     public void getLoginInfo(String userId){
         try {
@@ -80,41 +93,95 @@ public class OKHelper {
             okHttpClient.newCall(req).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    notifySyncFailed(1, e.toString());
+                    notifySyncLoginFailed(1, e.toString());
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (!response.isSuccessful()){
-                        notifySyncFailed(response.code(), response.message());
+                        notifySyncLoginFailed(response.code(), response.message());
                     }else{
                         parseLoginInfo(response.body().string());
                     }
                 }
             });
         }catch (Exception e){
-            notifySyncFailed(3, e.toString());
+            notifySyncLoginFailed(3, e.toString());
         }
     }
 
+    /** 从业务服务器获取privateMapKey信息 */
+    public void getPrivateMapKey(String userId, int roomId){
+        try {
+            JSONObject jsonReq = new JSONObject();
+            jsonReq.put(BussinessConstants.JSON_USERID, userId);
+            jsonReq.put(BussinessConstants.JSON_ROOMID, roomId);
+            RequestBody body = RequestBody.create(MediaType.parse("application/json"), jsonReq.toString());
+            Request req = new Request.Builder()
+                    .url(BussinessConstants.SERVER_PATH+"/get_privatemapkey")
+                    .post(body)
+                    .build();
+            Log.i(TAG, "getPrivateMapKey->url: "+req.url().toString());
+            Log.i(TAG, "getPrivateMapKey->post: "+body.toString());
+            okHttpClient.newCall(req).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    notifySyncPrivateMapKeyFailed(1, e.toString());
+                }
 
-    private void notifySyncSuccess(final LoginInfo info){
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (!response.isSuccessful()){
+                        notifySyncPrivateMapKeyFailed(response.code(), response.message());
+                    }else{
+                        parseKeyInfo(response.body().string());
+                    }
+                }
+            });
+        }catch (Exception e){
+            notifySyncPrivateMapKeyFailed(3, e.toString());
+        }
+    }
+
+    private void notifySyncLoginSuccess(final LoginInfo info){
         mMainHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 for (SyncUserInfoView view : syncUserInfoViews){
-                    view.onSyncSuccess(info);
+                    view.onSyncLoginSuccess(info);
                 }
             }
         }, 0);
     }
 
-    private void notifySyncFailed(final int errCode, final String errMsg){
+    private void notifySyncLoginFailed(final int errCode, final String errMsg){
+        mMainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (SyncPrivateMapkeyView view : syncPrivateMapKeyViews){
+                    view.onSyncKeyFailed(errCode, errMsg);
+                }
+            }
+        }, 0);
+    }
+
+    private void notifySyncPrivateMapKeySuccess(final PrivateMapKeyInfo info){
+        mMainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (SyncPrivateMapkeyView view : syncPrivateMapKeyViews){
+                    view.onSyncKeySuccess(info);
+                }
+            }
+        }, 0);
+    }
+
+    private void notifySyncPrivateMapKeyFailed(final int errCode, final String errMsg){
         mMainHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 for (SyncUserInfoView view : syncUserInfoViews){
-                    view.onSyncFailed(errCode, errMsg);
+                    view.onSyncLoginFailed(errCode, errMsg);
                 }
             }
         }, 0);
@@ -127,12 +194,28 @@ public class OKHelper {
             JSONObject msgJson = (JSONObject) jsonTokener.nextValue();
             int code = msgJson.getInt(BussinessConstants.JSON_CODE);
             if (0 != code){
-                notifySyncFailed(code, msgJson.getString(BussinessConstants.JSON_MESSAGE));
+                notifySyncLoginFailed(code, msgJson.getString(BussinessConstants.JSON_MESSAGE));
             }else{
-                notifySyncSuccess(new LoginInfo(msgJson));
+                notifySyncLoginSuccess(new LoginInfo(msgJson));
             }
         }catch (Exception e){
-            notifySyncFailed(2, e.toString());
+            notifySyncLoginFailed(2, e.toString());
+        }
+    }
+
+    private void parseKeyInfo(String rsp){
+        try {
+            Log.i(TAG, "parseKeyInfo->rsp: "+rsp);
+            JSONTokener jsonTokener = new JSONTokener(rsp);
+            JSONObject msgJson = (JSONObject) jsonTokener.nextValue();
+            int code = msgJson.getInt(BussinessConstants.JSON_CODE);
+            if (0 != code){
+                notifySyncPrivateMapKeyFailed(code, msgJson.getString(BussinessConstants.JSON_MESSAGE));
+            }else{
+                notifySyncPrivateMapKeySuccess(new PrivateMapKeyInfo(msgJson));
+            }
+        }catch (Exception e){
+            notifySyncPrivateMapKeyFailed(2, e.toString());
         }
     }
 }
