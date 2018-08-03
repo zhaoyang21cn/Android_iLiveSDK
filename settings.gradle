@@ -1,1 +1,1 @@
-include ':app', ':videocall', ':pstnassist'
+include ':app', ':videocall'
