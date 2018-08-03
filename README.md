@@ -42,6 +42,7 @@ ILiveRoomManager.getInstance().initAvRootView(avRootView);
 ```Java
 ILiveRoomOption option = new ILiveRoomOption()
                 .imsupport(false)       // 不需要IM功能
+                .privateMapKey          // 设置进房签名
                 .controlRole("Host")  // 使用Host角色
                 .exceptionListener(this)  // 监听异常事件处理
                 .roomDisconnectListener(this)   // 监听房间中断事件
@@ -53,6 +54,7 @@ ILiveRoomManager.getInstance().createRoom(roomid, option, callback);
 ```Java
 ILiveRoomOption option = new ILiveRoomOption()
                 .imsupport(false)       // 不需要IM功能
+                .privateMapKey(privateMapKey) // 进房签名
                 .exceptionListener(this)  // 监听异常事件处理
                 .roomDisconnectListener(this)   // 监听房间中断事件
                 .controlRole("Guest")  // 使用Guest角色
