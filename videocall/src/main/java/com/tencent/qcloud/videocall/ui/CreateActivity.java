@@ -21,6 +21,7 @@ import com.tencent.qcloud.videocall.bussiness.model.UserInfo;
 import com.tencent.qcloud.videocall.bussiness.view.SyncUserInfoView;
 import com.tencent.qcloud.videocall.trtcsdk.SDKHelper;
 import com.tencent.qcloud.videocall.trtcsdk.view.LoginView;
+import com.tencent.qcloud.videocall.trtcsdk.view.SpeedTestView;
 import com.tencent.qcloud.videocall.ui.utils.DlgMgr;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.List;
 /**
  * Created by tencent on 2018/5/21.
  */
-public class CreateActivity extends Activity implements SyncUserInfoView, LoginView{
+public class CreateActivity extends Activity implements SyncUserInfoView, LoginView, SpeedTestView {
     private EditText etRoomId;
     private TextView tvCreate;
 
@@ -59,6 +60,7 @@ public class CreateActivity extends Activity implements SyncUserInfoView, LoginV
         UserInfo.getInstance().getCache(this);
 
         SDKHelper.getInstance().addLoginView(this);
+        SDKHelper.getInstance().addSpeedTestView(this);
         OKHelper.getInstance().addSyncInfoView(this);
         OKHelper.getInstance().getLoginInfo(UserInfo.getInstance().getUserId());
 
@@ -67,6 +69,7 @@ public class CreateActivity extends Activity implements SyncUserInfoView, LoginV
 
     @Override
     protected void onDestroy() {
+        SDKHelper.getInstance().removeSpeedTestView(this);
         SDKHelper.getInstance().removeLoginView(this);
         OKHelper.getInstance().removeSyncInfoView(this);
         super.onDestroy();
@@ -106,12 +109,28 @@ public class CreateActivity extends Activity implements SyncUserInfoView, LoginV
     @Override
     public void onLoginSuccess(String userId) {
         bLogin = true;
+        SDKHelper.getInstance().startSpeedTest();
         DlgMgr.showToast(getContext(), getString(R.string.str_login_success));
     }
 
     @Override
     public void onLoginFailed(String module, int errCode, String errMsg) {
         Toast.makeText(getContext(), "login failed:" + module + "|" + errCode + "|" + errMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void appendSpeedTestInfo(final String tips) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView tvSpeedInfo = (TextView)findViewById(R.id.tv_speed_test_info);
+                if (null != tvSpeedInfo){
+                    String oldTest = tvSpeedInfo.getText().toString();
+                    oldTest += tips + "\n";
+                    tvSpeedInfo.setText(oldTest);
+                }
+            }
+        });
     }
 
     private Context getContext(){

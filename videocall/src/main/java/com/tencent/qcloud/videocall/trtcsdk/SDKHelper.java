@@ -22,6 +22,7 @@ import com.tencent.ilivesdk.core.ILiveRoomOption;
 import com.tencent.ilivesdk.data.ILiveTextLabel;
 import com.tencent.ilivesdk.data.msg.ILiveCustomMessage;
 import com.tencent.ilivesdk.data.msg.ILiveTextMessage;
+import com.tencent.ilivesdk.tools.ILiveSpeedTest;
 import com.tencent.ilivesdk.tools.quality.ILiveQualityData;
 import com.tencent.ilivesdk.tools.quality.LiveInfo;
 import com.tencent.ilivesdk.view.AVRootView;
@@ -35,8 +36,10 @@ import com.tencent.qcloud.videocall.trtcsdk.model.RoomTipsInfo;
 import com.tencent.qcloud.videocall.trtcsdk.view.LoginView;
 import com.tencent.qcloud.videocall.trtcsdk.view.OfflineView;
 import com.tencent.qcloud.videocall.trtcsdk.view.RoomView;
+import com.tencent.qcloud.videocall.trtcsdk.view.SpeedTestView;
 import com.tencent.qcloud.videocall.trtcsdk.view.TipsView;
 import com.tencent.qcloud.videocall.ui.Constants;
+import com.tencent.qcloud.videocall.ui.utils.DlgMgr;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -54,6 +57,7 @@ public class SDKHelper implements ILiveLoginManager.TILVBStatusListener,
     private LinkedList<OfflineView> offlineViews = new LinkedList<>();
     private LinkedList<RoomView> roomViews = new LinkedList<>();
     private LinkedList<TipsView> tipsViews = new LinkedList<>();
+    private LinkedList<SpeedTestView> stViews = new LinkedList<>();
 
     private int statusTopFix = 0;
     private int infoColor = Color.WHITE;
@@ -249,6 +253,26 @@ public class SDKHelper implements ILiveLoginManager.TILVBStatusListener,
                 notifyRoomExit();
             }
         });
+    }
+
+    /** 开始测速 */
+    public void startSpeedTest(){
+        ILiveSpeedTest.getInstance().startSpeedTest(new ILiveSpeedTest.SpeedTestDelegate() {
+            @Override
+            public void onSpeedTestAccessPoint(int index, int total, String ip, double upLostRate, double downLostRate, int rtt) {
+                notifySpeedTestInfo("["+index+"/"+total+"] "+ ip+" 上行:"+upLostRate+", 下行:"+downLostRate+", 延时:"+rtt);
+            }
+
+            @Override
+            public void onSpeedTestResult(int errCode, String result) {
+                if (0 != errCode)
+                    notifySpeedTestInfo("测速结果:"+errCode+"|"+result);
+                else{
+                    notifySpeedTestInfo("测速结束");
+                }
+            }
+        });
+        notifySpeedTestInfo("开始测速...");
     }
 
     /** 设置状态栏修正高度(沉浸式) */
@@ -518,6 +542,22 @@ public class SDKHelper implements ILiveLoginManager.TILVBStatusListener,
         ArrayList<TipsView> views = new ArrayList<>(tipsViews);
         for (TipsView view : views){
             view.onTipsInfo(info);
+        }
+    }
+
+    public void addSpeedTestView(SpeedTestView view){
+        if (!stViews.contains(view))
+            stViews.add(view);
+    }
+
+    public void removeSpeedTestView(SpeedTestView view){
+        stViews.remove(view);
+    }
+
+    public void notifySpeedTestInfo(String info){
+        ArrayList<SpeedTestView> views = new ArrayList<>(stViews);
+        for (SpeedTestView view : views){
+            view.appendSpeedTestInfo(info);
         }
     }
 
